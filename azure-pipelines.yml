@@ -50,8 +50,19 @@ stages:
         WebAppName: 'pocselenium'
         packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
-    - script: echo Functional_Tests
-      displayName: 'Functional_Tests'
+  - job: WindowsSteps
+    pool:
+      vmImage: 'windows-2019'
+    steps:
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+        projects: 'src/PocRandD.SeleniumTest/PocRandD.SeleniumTest.csproj'
+      displayName: 'FunctionalTests'
+  - job: LinuxTests
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
     - script: echo Performance_Tests
       displayName: 'Performance_Tests'
     - script: echo Delete_Dev_Publish
