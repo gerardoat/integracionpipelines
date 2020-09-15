@@ -6,9 +6,6 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 variables:
   buildConfiguration: 'Release'
 
@@ -16,6 +13,8 @@ stages:
 - stage: Development
   jobs:
   - job: Development
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - script: dotnet build src --configuration $(buildConfiguration)
       displayName: 'Build'
@@ -43,13 +42,13 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
     - task: AzureRmWebAppDeployment@4
-      displayName: 'Deploy to Azure App Service'
+      displayName: 'Deploy to Azure AppService'
       inputs:
         ConnectionType: 'AzureRM'
         azureSubscription: 'SuscripcionMaru'
         appType: 'webAppLinux'
         WebAppName: 'pocselenium'
-        packageForLinux: '$(System.ArtifactStagingDirectory)/**/*.zip'
+        packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
     - script: echo Functional_Tests
       displayName: 'Functional_Tests'
@@ -61,6 +60,8 @@ stages:
 - stage: QA
   jobs:
   - job: QA
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - script: echo Publish_QA
       displayName: 'Publish_QA'
@@ -68,6 +69,8 @@ stages:
 - stage: UAT
   jobs:
   - job: QA
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - script: echo Publish_UAT
       displayName: 'Publish_UAT'
