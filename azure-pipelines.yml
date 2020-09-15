@@ -32,8 +32,25 @@ stages:
       displayName: 'Static_Analysis__Building'
     - script: sudo SONAR_TOKEN=aff7a6afb8e4861ffd38a5ad975672f58598658a dotnet sonarscanner end
       displayName: 'Static_Analysis__EndAnalysis'
-    - script: echo Publish_Dev
-      displayName: 'Publish_Dev'
+    - task: DotNetCoreCLI@2
+      displayName: 'Create the Publish'
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: 'src/PocRandD/PocRandD.csproj'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        zipAfterPublish: true
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to Azure App Service'
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'SuscripcionMaru'
+        appType: 'webAppLinux'
+        WebAppName: 'pocselenium'
+        packageForLinux: '$(System.ArtifactStagingDirectory)/**/*.zip'
+        RuntimeStack: 'DOTNETCORE|3.1'
     - script: echo Functional_Tests
       displayName: 'Functional_Tests'
     - script: echo Performance_Tests
