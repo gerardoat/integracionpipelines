@@ -12,7 +12,7 @@ variables:
 stages:
 - stage: Development
   jobs:
-  - job: Development
+  - job: Build_UnitTests_Analysis_And_Deploy
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -60,7 +60,7 @@ stages:
         command: 'test'
         projects: 'src/PocRandD.SeleniumTest/PocRandD.SeleniumTest.csproj'
       displayName: 'FunctionalTests'
-    dependsOn: BuildDeploy
+    dependsOn: Build_UnitTests_Analysis_And_Deploy
     condition: succeeded()
   - job: LinuxSteps
     pool:
