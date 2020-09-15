@@ -51,7 +51,7 @@ stages:
         WebAppName: 'pocselenium'
         packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
         RuntimeStack: 'DOTNETCORE|3.1'
-  - job: WindowsSteps
+  - job: SeleniumTests
     pool:
       vmImage: 'windows-2019'
     steps:
@@ -62,7 +62,7 @@ stages:
       displayName: 'FunctionalTests'
     dependsOn: Build_UnitTests_Analysis_And_Deploy
     condition: succeeded()
-  - job: LinuxSteps
+  - job: PerformanceTests
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -70,6 +70,7 @@ stages:
       displayName: 'Performance_Tests'
     - script: echo Delete_Dev_Publish
       displayName: 'Delete_Dev_Publish'
+  dependsOn: SeleniumTests
 
 - stage: QA
   jobs:
