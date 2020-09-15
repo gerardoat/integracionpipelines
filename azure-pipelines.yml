@@ -60,6 +60,8 @@ stages:
         command: 'test'
         projects: 'src/PocRandD.SeleniumTest/PocRandD.SeleniumTest.csproj'
       displayName: 'FunctionalTests'
+    dependsOn: BuildDeploy
+    condition: succeeded()
   - job: LinuxSteps
     pool:
       vmImage: 'ubuntu-latest'
