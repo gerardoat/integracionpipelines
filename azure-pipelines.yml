@@ -72,20 +72,4 @@ stages:
       displayName: 'Delete_Dev_Publish'
   dependsOn: SeleniumTests
 
-- stage: QA
-  jobs:
-  - job: QA
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - script: echo Publish_QA
-      displayName: 'Publish_QA'
-  
-- stage: UAT
-  jobs:
-  - job: QA
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - script: echo Publish_UAT
-      displayName: 'Publish_UAT'
+
