@@ -41,6 +41,7 @@ stages:
         zipAfterPublish: true
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
+      condition: succeededOrFailed()
     - task: AzureRmWebAppDeployment@4
       displayName: 'Deploy to Azure AppService'
       inputs:
@@ -59,7 +60,7 @@ stages:
         command: 'test'
         projects: 'src/PocRandD.SeleniumTest/PocRandD.SeleniumTest.csproj'
       displayName: 'FunctionalTests'
-  - job: LinuxTests
+  - job: LinuxSteps
     pool:
       vmImage: 'ubuntu-latest'
     steps:
